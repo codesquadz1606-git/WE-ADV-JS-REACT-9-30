@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<style>
+    .box{
+        width: 300px;
+        height: 300px;
+        border: 2px solid black;
+    }
+</style>
+<body>
+    
+    <!-- <div class="box"></div> -->
+    
+    <button onclick="createFact()">Create Fact</button>
+    <h1>0 Facts</h1>
+    <main></main>
+
+    <script>
+        // Callback hell
+        // I am saving my data to the database & if the internet connection is less than 4 than it will give the error while saving the data.
+
+        // function dataSave(data,success,failure){
+        //     let internetSpeed=Math.ceil(Math.random()*10)
+        //     if(internetSpeed>4){
+        //         success(internetSpeed)
+        //     }
+        //     else{
+        //         failure(internetSpeed)
+        //     }
+        // }
+
+        // dataSave("Anil",(s)=>{
+        //     console.log("Data 1 Saved",s);
+        //     dataSave("Anshu",(s)=>{
+        //         console.log("Data 2 Saved",s)
+        //         dataSave("Farhan",(s)=>{
+        //             console.log("Data 3 Saved",s)
+        //         },(s)=>{
+        //             console.log("Error is Saving",s)
+        //         })
+        //     },(s)=>{
+        //         console.log("Error in Saving",s)
+        //     })
+        // },(s)=>{
+        //     console.log("Error is Saving",s)
+        // })
+
+        // Promises : Here either output is fullfiled or rejected.
+        // function dataSave(data){
+        //     return new Promise((res,rej)=>{
+        //         let internetSpeed=Math.ceil(Math.random()*10)
+        //         if(internetSpeed>4){
+        //             res(internetSpeed)
+        //         }
+        //         else{
+        //             rej(internetSpeed)
+        //         }
+        //     })
+        // }
+
+        // How we can handle the promise?
+        // then() & catch()
+
+        // dataSave("Anuj")
+        // .then((s)=>{
+        //     console.log("Data 1 Saved",s);
+        //     return dataSave("Sakshi");// promise
+        // })
+        // .then((s)=>{
+        //     console.log("Data 2 Saved",s)
+        //     return dataSave("Sumit")
+        // })
+        // .then((s)=>{
+        //     console.log("Data 3 Saved",s)
+        // })
+        // .catch((e)=>{ // single catch can handle all the errors.
+        //     console.log("Low Internet",e)
+        // })
+
+        // What is Promises?
+        // Promise is the asyncgronous code.
+        // Promise deals in acceptance or rejection
+        // Promise is initated with "return new Promise" keyword
+        // Promise is handled with then & catch Method.
+
+        // What is Async & Await?
+        // async keyword can convert any function into the promise.
+
+        // async function greet(){
+        //     console.log("Good Morning")
+        // }
+
+        // await handles that promise , but await is only used when function has async.
+
+        // let box=document.querySelector(".box");
+
+        // function colorChange(color,time){
+        //     return new Promise((res,rej)=>{
+        //         setTimeout(()=>{
+        //             res();
+        //             box.style.backgroundColor=color
+        //         },time)
+        //     })
+        // }
+
+        // async function calls(){
+        //     await colorChange("red",2000)
+        //     await colorChange("green",2000)
+        //     await colorChange("blue",2000)
+        // }
+
+        // What is API?
+        // Application Programming Interface.
+        // 5 Types:
+        // i. Get : Used in frontend
+        // ii. Post
+        // iii. Put
+        // iv. Patch
+        // v. Delete
+
+        // API is handled by two methods:
+        // i. fetch() : it is in-built method.
+        // ii. axios() : Library.
+        
+        // What is fetch() keyword?
+        // fetch is promise.
+
+        // let url="https://jsonplaceholder.typicode.com/posts"
+        // fetch(url)
+        // .then((res)=>{
+        //     console.log(res)
+        //     // We have to convert that response into json format
+        //     // console.log(res.json())
+        //     // json() is also a promise
+
+        //     return res.json();
+        // })
+        // .then((data)=>{
+        //     console.log(data)
+        // })
+        // .catch((err)=>{
+        //     console.log(err)
+        // })
+
+        let url="https://catfact.ninja/fact"
+        let main=document.querySelector("main")
+        let ul=document.createElement("ul")
+        let h1=document.querySelector("h1")
+        function createFact(){
+            let li=document.createElement("li")
+            fetch(url)
+            .then((res)=>{
+                return res.json()
+            })
+            .then((data)=>{
+                li.innerHTML=`<b>Fact : </b>${data.fact}`
+                ul.prepend(li)
+                console.log(data)
+                h1.innerText=`${ul.children.length} Facts`
+            })
+            .catch((err)=>{
+                console.log(err)
+            })
+        }
+
+        main.append(ul)
+
+    </script>
+</body>
+</html>

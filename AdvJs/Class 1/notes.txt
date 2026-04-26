@@ -1,0 +1,19 @@
+Topic 1 : What is call stack?
+Here we can access how the calls are made and we can track each call.
+
+Topic 2: What is the diffrence b/w Synchronous & Asynchronous?
+
+What is Synchronous?
+Synchronous means that code is running line by line.
+
+What is Asynchronous?
+Whenever code takes some amount of time , i.e asynchronous code.
+
+Asynchronous codes are handled by the browser.
+setTimeout(), setInterval(), async , await, promises , api calls
+
+Is JS single threaded?
+JS is single threaded.Because js is aviable to handle itself code.
+
+Topic 3: What is callback hell?
+
