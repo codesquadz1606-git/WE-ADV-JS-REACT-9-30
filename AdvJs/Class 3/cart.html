@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<style>
+    * {
+        margin: 0px;
+        padding: 0px;
+    }
+
+    header {
+        display: flex;
+        justify-content: space-between;
+        background-color: beige;
+        padding: 30px;
+    }
+
+    main {
+        display: flex;
+        flex-direction: column;
+        padding: 40px 40px;
+        gap: 20px;
+    }
+
+    .outer {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 0px 50px;
+        background-color: beige;
+        border-radius: 30px;
+    }
+
+    .qty-inc-dec {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .inc-dec {
+        display: flex;
+        gap: 10px;
+        align-items: center;
+    }
+
+    .remove {
+        border: none;
+        background-color: red;
+        padding: 10px 20px;
+        border-radius: 30px;
+        color: white;
+        font-weight: bolder;
+    }
+
+    .btn-inc-dec {
+        padding: 10px;
+    }
+
+    .price-remove {
+        display: flex;
+        justify-content: space-between;
+    }
+
+    .content {
+        width: 50%;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        gap: 30px;
+    }
+</style>
+
+<body>
+    <header>
+        <div class="logo">
+            <h1><a href="index.html">Logo</a></h1>
+        </div>
+        <div class="cart" style="color: blue;">
+            <h1><a href="cart.html">Cart</a></h1>
+        </div>
+    </header>
+
+    <main>
+
+    </main>
+
+    <footer>
+        <h1>Total Summary</h1>
+        <hr>
+        <table>
+            <tr class="head">
+                <th width="400px">S.no</th>
+                <th width="400px">Item Name</th>
+                <th width="400px">Total Price</th>
+            </tr>
+
+            <tr>
+                <th colspan="2">Total Payable Amount</th>
+                <th class="totalPrice"></th>
+            </tr>
+        </table>
+    </footer>
+
+    <script>
+        let cart = JSON.parse(localStorage.getItem("mycart") || "[]")
+        console.log(cart)
+        let main = document.querySelector("main")
+
+        cart.map((el) => {
+            let outer = document.createElement("div")
+
+            let image = document.createElement("img")
+
+            let content = document.createElement("div")
+            let heading = document.createElement("h1")
+
+            let qty_inc_dec = document.createElement("div")
+            let qty = document.createElement("h2");
+
+            let inc_dec = document.createElement("div")
+            let dec = document.createElement("button")
+            let no = document.createElement("span")
+            let inc = document.createElement("button")
+
+            let price_remove = document.createElement("div")
+            let price = document.createElement("h3");
+            let remove = document.createElement("button")
+
+            image.src = el.thumbnail
+            heading.innerText = el.title
+            qty.innerText = "Quantity"
+            dec.innerText = "-"
+            no.innerText = el.qty
+            inc.innerText = "+"
+            price.innerText = `Rs ${Math.ceil(el.price * 93) * el.qty}`
+            remove.innerText = "Remove From Cart"
+
+            outer.classList.add("outer")
+            qty_inc_dec.classList.add("qty-inc-dec")
+            price_remove.classList.add("price-remove")
+            content.classList.add("content")
+            inc_dec.classList.add("inc-dec")
+            inc.classList.add("btn-inc-dec")
+            dec.classList.add("btn-inc-dec")
+            remove.classList.add("remove")
+
+            price_remove.append(price, remove)
+            inc_dec.append(dec, no, inc)
+            qty_inc_dec.append(qty, inc_dec)
+            content.append(heading, qty_inc_dec, price_remove)
+            outer.append(image, content)
+
+            let head = document.querySelector(".head")
+            let tP=document.querySelector(".totalPrice")
+            let tr = document.createElement("tr")
+            let s_no = document.createElement("td")
+            let pTitle = document.createElement("td")
+            let pPrice = document.createElement("td")
+
+            // reduce function ek overall value lake de detaa h.
+
+            let totalP=cart.reduce((acc,el)=>{
+                let total=acc+Math.ceil(el.price*93)*el.qty
+                return total
+            },0)
+
+            console.log(totalP)
+
+            tP.innerText=`Rs ${totalP}/-`
+
+            s_no.innerText = "0"
+            pTitle.innerText = el.title
+            pPrice = `Rs ${Math.ceil(el.price * 93) * el.qty}`
+
+            tr.append(s_no, pTitle, pPrice)
+            tr.style.textAlign = "center"
+
+            head.insertAdjacentElement("afterend", tr)
+
+            inc.addEventListener("click", () => {
+                let existing = cart.find((item) => item.id === el.id);
+                if (existing) {
+                    existing.qty += 1;
+                }
+                // cart.push({...el,qty:qty+1})
+                console.log("Clicked")
+                localStorage.setItem("mycart", JSON.stringify(cart))
+                no.innerText = el.qty
+                price.innerText = `Rs ${Math.ceil(el.price * 93) * el.qty}`
+
+                if (el.qty == 1) {
+                    dec.disabled = true
+                }
+                else {
+                    dec.disabled = false
+                }
+
+                pTitle.innerText = el.title
+                pPrice = `Rs ${Math.ceil(el.price * 93) * el.qty}`
+            })
+            dec.addEventListener("click", () => {
+                let existing = cart.find((item) => item.id === el.id);
+                if (existing) {
+                    existing.qty -= 1;
+                }
+                // cart.push({...el,qty:qty+1})
+                console.log("Clicked")
+                localStorage.setItem("mycart", JSON.stringify(cart))
+                no.innerText = el.qty
+                price.innerText = `Rs ${Math.ceil(el.price * 93) * el.qty}`
+
+                if (el.qty == 1) {
+                    dec.disabled = true
+                }
+                else {
+                    dec.disabled = false
+                }
+
+                pTitle.innerText = el.title
+                pPrice = `Rs ${Math.ceil(el.price * 93) * el.qty}`
+            })
+            if (el.qty == 1) {
+                dec.disabled = true
+            }
+            else {
+                dec.disabled = false
+            }
+
+            remove.addEventListener("click", () => {
+                let filteredProduct = cart.filter((item) => item.id === el.id);
+                localStorage.removeItem(filteredProduct)
+            })
+
+
+
+            main.append(outer)
+
+            // reduce method: current + accumlated value & this returns the accumlated value.
+        })
+    </script>
+</body>
+
+</html>
